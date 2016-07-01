@@ -12,8 +12,7 @@ etcd_private_ip: ${etcd_private_ip}
 deployment_mode: ${deployment_mode}
 hyperkube_image: ${hyperkube_image}
 interface_name: ${interface_name}
-kraken_services_branch: ${kraken_services_branch}
-kraken_services_dirs: ${kraken_services_dirs}
+kraken_services: ${kraken_services}
 kraken_services_repo: ${kraken_services_repo}
 thirdparty_scheduler: ${thirdparty_scheduler}
 kubernetes_api_version: ${kubernetes_api_version}

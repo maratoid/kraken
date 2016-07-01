@@ -152,18 +152,13 @@ variable "kraken_repo" {
 }
 
 variable "kraken_services_repo" {
-  default     = "git://github.com/samsung-cnct/kraken-services"
-  description = "Kraken services git repo"
+  default     = "http://atlas.cnct.io"
+  description = "Kraken services helm charts repo"
 }
 
-variable "kraken_services_branch" {
-  default     = "master"
-  description = "Kraken services repo branch"
-}
-
-variable "kraken_services_dirs" {
+variable "kraken_services" {
   default     = "skydns cluster-monitoring kubedash prometheus"
-  description = "Kraken services folders under kraken repo to deploy kubernetes services from."
+  description = "Helm charts to deploy to cluster after it starts up."
 }
 
 variable "thirdparty_scheduler" {

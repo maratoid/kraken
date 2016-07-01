@@ -25,8 +25,7 @@ write_files:
         hyperkube_image: ${hyperkube_image}
         interface_name: ${interface_name}
         kraken_local_dir: ${kraken_local_dir}
-        kraken_services_branch: ${kraken_services_branch}
-        kraken_services_dirs: ${kraken_services_dirs}
+        kraken_services: ${kraken_services}
         kraken_services_repo: ${kraken_services_repo}
         kubernetes_api_version: ${kubernetes_api_version}
         kubernetes_binaries_uri: ${kubernetes_binaries_uri}

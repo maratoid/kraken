@@ -4,7 +4,7 @@
   register: services_local_path
 
 - name: Download kraken-services locally
-  local_action: git repo={{kraken_services_repo}} dest={{services_local_path.stdout}} version={{kraken_services_branch}} accept_hostkey=yes force=yes
+  local_action: git repo={{kraken_services_repo}} dest={{services_local_path.stdout}} accept_hostkey=yes force=yes
 
 - name: Grab all yaml files from the cloned repo
   local_action: find paths="{{services_local_path.stdout}}" patterns="^.*?\.(?:yaml|yml)$" recurse=yes use_regex=True

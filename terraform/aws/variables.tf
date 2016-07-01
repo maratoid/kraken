@@ -7,7 +7,7 @@ variable "aws_access_key" {
   description = "AWS key id"
   default = ""
 }
- 
+
 variable "aws_secret_key" {
   description = "AWS secret key"
   default = ""
@@ -297,18 +297,13 @@ variable "kraken_repo" {
 }
 
 variable "kraken_services_repo" {
-  default     = "https://github.com/samsung-cnct/kraken-services"
-  description = "Kraken services git repo"
+  default     = "http://atlas.cnct.io"
+  description = "Helm charts repo to use"
 }
 
-variable "kraken_services_branch" {
-  default     = "master"
-  description = "Kraken services repo branch"
-}
-
-variable "kraken_services_dirs" {
+variable "kraken_services" {
   default     = "skydns cluster-monitoring kubedash prometheus"
-  description = "Kraken services folders under kraken repo to deploy kubernetes services from."
+  description = "Helm charts to deploy to cluster after it is done starting up."
 }
 
 variable "thirdparty_scheduler" {

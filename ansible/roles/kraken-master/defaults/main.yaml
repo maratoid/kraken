@@ -1,8 +1,11 @@
 ---
 apiserver_nginx_pool: 127.0.0.1:443
 deployment_mode: binary
-kraken_services: skydns prometheus kubedash cluster-monitoring
-kraken_services_repo: http://atlas.cnct.io
+kraken_services: skydns|atlas/skydns-0.1.0 prometheus|atlas/prometheus-0.1.0 kubedash|atlas/kubedash-0.1.0 monitoring|atlas/cluster-monitoring-0.1.0
+kraken_services_repos: atlas|http://atlas.cnct.io
+tiller_rc: tiller-rc
+tiller_image: quay.io/samsung_cnct/tiller
+helm_image: quay.io/samsung_cnct/helm
 thirdparty_scheduler:
 services:
   command_passwd: "{{command_passwd}}"

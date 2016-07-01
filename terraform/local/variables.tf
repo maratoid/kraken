@@ -151,13 +151,13 @@ variable "kraken_repo" {
   description = "Kraken git repo"
 }
 
-variable "kraken_services_repo" {
-  default     = "http://atlas.cnct.io"
-  description = "Kraken services helm charts repo"
+variable "kraken_services_repos" {
+  default     = "atlas|http://atlas.cnct.io"
+  description = "Kraken services helm charts repos"
 }
 
 variable "kraken_services" {
-  default     = "skydns cluster-monitoring kubedash prometheus"
+  default     = "skydns|atlas/skydns-0.1.0 prometheus|atlas/prometheus-0.1.0 kubedash|atlas/kubedash-0.1.0 monitoring|atlas/cluster-monitoring-0.1.0"
   description = "Helm charts to deploy to cluster after it starts up."
 }
 

@@ -28,7 +28,7 @@ write_files:
         interface_name: ${interface_name}
         kraken_local_dir: ${kraken_local_dir}
         kraken_services: ${kraken_services}
-        kraken_services_repo: ${kraken_services_repo}
+        kraken_services_repos: ${kraken_services_repos}
         kubernetes_api_version: ${kubernetes_api_version}
         kubernetes_binaries_uri: ${kubernetes_binaries_uri}
         kubernetes_cert_dir: ${kubernetes_cert_dir}

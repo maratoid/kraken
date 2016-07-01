@@ -1,13 +1,11 @@
 ---
-- name: Clean up kraken services, ignoring errors
-  become: yes
+- name: Clean up releases
   shell: >
-    /opt/bin/kubectl --kubeconfig={{ controller_manager_settings.kubeconfig | expanduser }} delete -f /opt/bin/kraken-services/{{ item }}
-  with_items: "{{ kraken_services_dirs.split(' ') }}"
+    docker run --rm -v /root/.helm:/helm-home -v {{ controller_manager_settings.kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} delete {{ item.split('|')[0] }}
+  with_items: "{{ kraken_services.split(' ') }}"
   ignore_errors: yes
 
-- name: Create kraken services, ignoring errors
-  become: yes
+- name: Install charts
   shell: >
-    /opt/bin/kubectl --kubeconfig={{ controller_manager_settings.kubeconfig | expanduser }} create -f /opt/bin/kraken-services/{{ item }} || /opt/bin/kubectl --kubeconfig={{ controller_manager_settings.kubeconfig | expanduser }} apply -f /opt/bin/kraken-services/{{ item }}
-  with_items: "{{ kraken_services_dirs.split(' ') }}"
+    docker run --rm -v /root/.helm:/helm-home -v {{ controller_manager_settings.kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} install {{ item.split('|')[1] }} --name {{ item.split('|')[0] }}
+  with_items: "{{ kraken_services.split(' ') }}"

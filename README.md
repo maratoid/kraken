@@ -76,6 +76,8 @@ Kraken supports optionally deploying a third-party scheduler as a set of Kuberne
 
     thirdparty_scheduler = "scheduler_helm_repo/custom-scheduler-chart-x.x.x"
 
+Note that 'name|..' syntax is not used here.
+
 ## Create cluster
 
 Easiest way to create a non-local kraken cluster is to use /bin scripts that let you create a kraken cluster from a remote docker container.

@@ -10,14 +10,16 @@
   service: name=k8s-docker-master state=started enabled=yes
   when: "deployment_mode == 'container'"
 
-- name: Create third party scheduler pod
+- name: Clean up third party scheduler release
   become: yes
   shell: >
-    /opt/bin/kubectl --kubeconfig={{ controller_manager_settings.kubeconfig | expanduser }} create -f /opt/bin/kraken-services/{{ thirdparty_scheduler }} || /opt/bin/kubectl --kubeconfig={{ controller_manager_settings.kubeconfig | expanduser }} apply -f /opt/bin/kraken-services/{{ thirdparty_scheduler }}
-  register: pod_result
-  until: pod_result.rc == 0
-  retries: 120
-  delay: 10
+    docker run --rm -v /root/.helm:/helm-home -v {{ controller_manager_settings.kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} delete kraken-custom-scheduler
+  ignore_errors: yes
+
+- name: Install third party scheduler chart
+  become: yes
+  shell: >
+    docker run --rm -v /root/.helm:/helm-home -v {{ controller_manager_settings.kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} install {{ thirdparty_scheduler }} --name kraken-custom-scheduler --values /root/helm-values.yaml
 
 - name: Shut down binary scheduler
   become: yes
@@ -29,7 +31,7 @@
   file: path=/opt/bin/manifests/scheduler.json state=absent
   when: "deployment_mode == 'container'"
 
-- name: Restart dockerized contorller manager pod scheduler
+- name: Restart dockerized controller manager pod scheduler
   become: yes
   service: name=k8s-docker-master state=restarted enabled=yes
   when: "deployment_mode == 'container'"

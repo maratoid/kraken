@@ -17,8 +17,11 @@
     docker run --rm -v /root/.helm:/helm-home -v {{ controller_manager_settings.kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} init --tiller-image {{ tiller_image }}
 
 - name: Add helm repositories
+  become: yes
   shell: >
     docker run --rm -v /root/.helm:/helm-home -v {{ controller_manager_settings.kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} repo add {{ item.split('|')[0] }} {{ item.split('|')[1] }}
   with_items: "{{ kraken_services_repos.split(' ') }}"
 
-  # TODO: render the custom value yamls
+- name: Render helm values file
+  become: yes
+  template: src=helm-values.yaml.jinja2 dest=/root/helm-values.yaml

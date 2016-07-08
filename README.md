@@ -67,14 +67,14 @@ All available variables to override and set are under
 
 Kraken supports turnkey deployment of a number of useful cluster services, via the [kraken-services](https://github.com/samsung-cnct/kraken-services) repository.  Don't see a service you want in our repo?  You can use your own!
 
-    kraken_services_repos = "http://your.helm-repo.com http://your_other.helm-repo.com"
-    kraken_services = "helm-chart1 helm-chart2"
+    kraken_services_repos = "your_repo|http://www.your-repo.com your_other_repo|http://www.your-repo.com"
+    kraken_services = "chart-deployment-name|your_repo/your-chart-0.1.0 other-chart-deployment-name|your_repo/your-other-chart-1.1.1 yet-another-name|your_other_repo/blah-1.2.3"
 
 ### Third Party Scheduler
 
 Kraken supports optionally deploying a third-party scheduler as a set of Kubernetes resources, and using that instead of the default `kube-scheduler` process.  The third party scheduler is assumed to be a helm chart available for deployment from one of the services repos specified by `kraken_services_repos`
 
-    thirdparty_scheduler = "custom-scheduler"
+    thirdparty_scheduler = "scheduler_helm_repo/custom-scheduler-chart-x.x.x"
 
 ## Create cluster
 

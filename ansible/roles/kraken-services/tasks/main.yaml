@@ -1,0 +1,4 @@
+- include: setup.yaml
+- include: thirdparty-scheduler.yaml
+  when: not((thirdparty_scheduler is undefined) or (thirdparty_scheduler is none) or (thirdparty_scheduler|trim == ''))
+- include: run.yaml

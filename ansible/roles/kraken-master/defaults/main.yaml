@@ -1,21 +1,6 @@
 ---
 apiserver_nginx_pool: 127.0.0.1:443
 deployment_mode: binary
-kraken_services: skydns|atlas/skydns-0.1.0 prometheus|atlas/prometheus-0.1.0 kubedash|atlas/kubedash-0.1.0 monitoring|atlas/cluster-monitoring-0.1.0
-kraken_services_repos: atlas|http://atlas.cnct.io
-tiller_rc: tiller-rc
-tiller_image: quay.io/samsung_cnct/tiller
-helm_image: quay.io/samsung_cnct/helm
-thirdparty_scheduler:
-services:
-  uge_password: "{{command_passwd}}"
-  dockercfg_base64: "{{dockercfg_base64}}"
-  master_cadvisor: "{{master_private_ip}}:8094"
-  etcd_cadvisor: "{{etcd_private_ip}}:8094"
-  etcd_target: "{{etcd_private_ip}}:4001"
-  kube_controller_manager: "{{master_private_ip}}:10252"
-  kube_scheduler: "{{master_private_ip}}:10251"
-  dns_domain: "{{dns_domain}}"
 nginx:
   kubernetes_api_proxy_uri_regexes:
     - "/api/v1/proxy/namespaces/([^/]+)/(pods|services)"

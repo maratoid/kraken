@@ -1,0 +1,49 @@
+---
+- name: create a temp path kraken services locally
+  local_action: shell mktemp -d -t services.{{ inventory_hostname }}.XXXXXXXXXX
+  register: services_local_path
+
+- name: Clean up tiller rc if present
+  become: yes
+  shell: >
+    /opt/bin/kubectl --kubeconfig={{ kubeconfig | expanduser }} delete rc {{ tiller_rc }}
+  ignore_errors: yes
+
+- name: Create Helm home
+  become: yes
+  file: >
+    path={{ helm_home }}
+    state=directory
+
+- name: Init helm
+  become: yes
+  shell: >
+    docker run --rm -v {{ helm_home }}:/helm-home -v {{ kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} init --tiller-image {{ tiller_image }}
+
+- name: Add helm repositories
+  become: yes
+  shell: >
+    docker run --rm -v {{ helm_home }}:/helm-home -v {{ kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} repo add {{ item.split('|')[0] }} {{ item.split('|')[1] }}
+  with_items: "{{ kraken_services_repos.split(' ') }}"
+
+- name: Get all user provided service configs
+  stat: path={{item}}
+  with_fileglob: {{ service_configs }}
+  register: user_configs
+
+- name: Fetch all the values files
+  become: yes
+  run_once: true
+  fetch: >
+    src={{ item }} 
+    dest={{ services_local_path }}/ 
+    flat=yes 
+    fail_on_missing=yes
+  with_fileglob: "{{ service_configs }}"
+
+- name: Render helm values files for all deployment names in kraken_services unless already present
+  template: src={{ item }} dest={{ service_configs_dir }}/{{ item | basename }}.yaml
+  with_fileglob: "{{ services_local_path }}/*.{{ service_configs_ext }}"
+
+- name: Create default values file
+  template: src=helm-values.yaml.jinja2 dest={{ service_configs_dir }}/default-helm-values.yaml

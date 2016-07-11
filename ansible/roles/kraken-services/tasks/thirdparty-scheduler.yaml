@@ -14,25 +14,42 @@
 - name: Clean up third party scheduler release
   become: yes
   shell: >
-    docker run --rm -v /root/.helm:/helm-home -v {{ controller_manager_settings.kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} delete kraken-custom-scheduler
+    docker run --rm -v /root/.helm:/helm-home -v {{ kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} delete kraken-custom-scheduler
   ignore_errors: yes
 
-- name: Install third party scheduler chart
+- name: Stat the custom user value file for scheduler chart
+  become: yes
+  stat: path={{ service_configs_dir }}/{{ thirdparty_scheduler.split('|')[0] }}.{{ service_configs_ext }}.yaml
+  register: scheduler_user_values
+
+- name: Install third party scheduler chart without user defined values
   become: yes
   shell: >
-    docker run --rm -v /root/.helm:/helm-home -v {{ controller_manager_settings.kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} install {{ thirdparty_scheduler }} --name kraken-custom-scheduler --values /root/helm-values.yaml
+    docker run --rm -v {{ helm_home }}:/helm-home -v {{ kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} install {{ thirdparty_scheduler.split('|')[1] }} --name {{ thirdparty_scheduler.split('|')[0] }} --values {{ service_configs_dir }}/default-helm-values.yaml
+  when:
+    - scheduler_user_values.exist == false
+
+- name: Install third party scheduler chart without user defined values
+  become: yes
+  shell: >
+    docker run --rm -v {{ helm_home }}:/helm-home -v {{ kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} install {{ thirdparty_scheduler.split('|')[1] }} --name {{ thirdparty_scheduler.split('|')[0] }} --values {{ service_configs_dir }}/{{ thirdparty_scheduler.split('|')[0] }}.{{ service_configs_ext }}.yaml
+  when:
+    - scheduler_user_values.exist == true
 
 - name: Shut down binary scheduler
   become: yes
   service: name=k8s-binary-scheduler state=stopped enabled=yes
   when: "deployment_mode == 'binary'"
+  delegate_to: master
 
 - name: Modify dockerized scheduler
   become: yes
   file: path=/opt/bin/manifests/scheduler.json state=absent
   when: "deployment_mode == 'container'"
+  delegate_to: master
 
 - name: Restart dockerized controller manager pod scheduler
   become: yes
   service: name=k8s-docker-master state=restarted enabled=yes
   when: "deployment_mode == 'container'"
+  delegate_to: master

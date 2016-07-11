@@ -9,7 +9,7 @@ kraken_services_repos: atlas|http://atlas.cnct.io
 tiller_rc: tiller-rc
 tiller_image: quay.io/samsung_cnct/tiller
 helm_image: quay.io/samsung_cnct/helm
-thirdparty_scheduler:
+thirdparty_scheduler: #command-scheduler|atlas/command-0.1.0 
 services:
   uge_password: "{{command_passwd}}"
   dockercfg_base64: "{{dockercfg_base64}}"

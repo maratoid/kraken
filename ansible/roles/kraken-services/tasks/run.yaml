@@ -6,7 +6,7 @@
   with_items: "{{ kraken_services.split(' ') }}"
   ignore_errors: yes
 
-- name: 
+- name: Stat all the custom user value files for services charts
   become: yes
   stat: path={{ service_configs_dir }}/{{ item.split('|')[0] }}.{{ service_configs_ext }}.yaml
   with_items: "{{ kraken_services.split(' ') }}"

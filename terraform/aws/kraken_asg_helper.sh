@@ -121,6 +121,16 @@ function generate_kubeconfig() {
   done
 }
 
+function start_services() {
+  echo "Starting cluster services."
+
+  # run ansible
+  echo "Running ansible-playbook -i ${OUTPUT_FILE} ${script_dir}/../../ansible/kraken_services.yaml --ssh-extra-args=\"-T\"..."
+  ansible-playbook -i ${OUTPUT_FILE} ${script_dir}/../../ansible/kraken_services.yaml --ssh-extra-args="-T"
+
+  return $?
+}
+
 function wait_for_asg() {
   local asg_instance_limit=$(aws --output text --query "AutoScalingGroups[0].DesiredCapacity" \
           autoscaling describe-auto-scaling-groups --auto-scaling-group-name "${ASG_NAME}")
@@ -257,6 +267,12 @@ if (( success )); then
   echo "Success!"
 else
   echo "Failure!"
+fi
+
+# start cluster services
+if ! start_services
+  echo "Cluster services startup FAILED. Changing status to Failure."
+  success=0
 fi
 
 exit $((!$success))

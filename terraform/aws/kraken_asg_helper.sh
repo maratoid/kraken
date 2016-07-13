@@ -270,7 +270,7 @@ else
 fi
 
 # start cluster services
-if ! start_services
+if ! start_services; then
   echo "Cluster services startup FAILED. Changing status to Failure."
   success=0
 fi

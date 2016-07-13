@@ -4,12 +4,9 @@ ansible_python_interpreter: "PATH=/home/core/bin:$PATH python"
 apiserver_ip_pool: ${apiserver_ip_pool}
 apiserver_nginx_pool: ${apiserver_nginx_pool}
 proxy_record: ${proxy_record}
-command_passwd: ${command_passwd}
 dns_domain: ${dns_domain}
 dns_ip: ${dns_ip}
-dockercfg_base64: ${dockercfg_base64}
 etcd_private_ip: ${etcd_private_ip}
-deployment_mode: ${deployment_mode}
 hyperkube_image: ${hyperkube_image}
 interface_name: ${interface_name}
 kubernetes_api_version: ${kubernetes_api_version}

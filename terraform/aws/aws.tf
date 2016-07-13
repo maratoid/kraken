@@ -666,6 +666,14 @@ resource "template_file" "local_groupvars" {
   template                        = "${file("${path.module}/templates/local.tpl")}"
 
   vars {
+    kraken_services               = "${var.kraken_services}"
+    kraken_services_repos         = "${var.kraken_services_repos}"
+    thirdparty_scheduler          = "${var.thirdparty_scheduler}"
+    dockercfg_base64              = "${var.dockercfg_base64}"
+    command_passwd                = "${var.command_passwd}"
+    master_private_ip             = "${aws_instance.kubernetes_master.private_ip}"
+    etcd_private_ip               = "${aws_instance.kubernetes_etcd.private_ip}"
+    dns_domain                    = "${var.dns_domain}"
   }
 
   provisioner "local-exec" {
@@ -682,6 +690,7 @@ resource "template_file" "all_groupvars" {
     cluster_name                  = "${var.cluster_name}"
     cluster_passwd                = "${var.cluster_passwd}"
     cluster_user                  = "${var.aws_user_prefix}"
+    deployment_mode               = "${var.deployment_mode}"
     etcd_public_ip                = "${aws_instance.kubernetes_etcd.public_ip}"
     kubernetes_cert_dir           = "${var.kubernetes_cert_dir}"
     master_public_ip              = "${aws_instance.kubernetes_master.public_ip}"
@@ -706,17 +715,12 @@ resource "template_file" "cluster_groupvars" {
     cluster_name                  = "${var.cluster_name}"
     cluster_passwd                = "${var.cluster_passwd}"
     cluster_user                  = "${var.aws_user_prefix}"
-    command_passwd                = "${var.command_passwd}"
     dns_domain                    = "${var.dns_domain}"
     dns_ip                        = "${var.dns_ip}"
-    dockercfg_base64              = "${var.dockercfg_base64}"
     etcd_private_ip               = "${aws_instance.kubernetes_etcd.private_ip}"
     etcd_public_ip                = "${aws_instance.kubernetes_etcd.public_ip}"
-    deployment_mode               = "${var.deployment_mode}"
     hyperkube_image               = "${var.hyperkube_image}"
     interface_name                = "eth0"
-    kraken_services               = "${var.kraken_services}"
-    kraken_services_repos         = "${var.kraken_services_repos}"
     kubernetes_api_version        = "${var.kubernetes_api_version}"
     kubernetes_binaries_uri       = "${var.kubernetes_binaries_uri}"
     kubernetes_cert_dir           = "${var.kubernetes_cert_dir}"
@@ -727,7 +731,6 @@ resource "template_file" "cluster_groupvars" {
     master_record                 = "https://${replace(var.aws_user_prefix,"_","-")}-${replace(var.cluster_name,"_","-")}-master.${var.aws_cluster_domain}:${var.access_port}"
     proxy_record                  = "${replace(var.aws_user_prefix,"_","-")}-${replace(var.cluster_name,"_","-")}-proxy.${var.aws_cluster_domain}"
     sysdigcloud_access_key        = "${var.sysdigcloud_access_key}"
-    thirdparty_scheduler          = "${var.thirdparty_scheduler}"
   }
 
   provisioner "local-exec" {

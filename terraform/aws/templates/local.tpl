@@ -3,7 +3,6 @@ ansible_connection: local
 kraken_services: ${kraken_services}
 kraken_services_repos: ${kraken_services_repos}
 thirdparty_scheduler: ${thirdparty_scheduler}
-deployment_mode: ${deployment_mode}
 service_tokens:
   dockercfg_base64: ${dockercfg_base64}
   command_passwd: ${command_passwd}

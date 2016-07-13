@@ -4,6 +4,7 @@ ansible_ssh_private_key_file: ${ansible_ssh_private_key_file}
 master_record: ${master_record}
 cluster_name: ${cluster_name}
 cluster_type: aws
+deployment_mode: ${deployment_mode}
 kubernetes_basic_auth_user:
   name: ${cluster_user}
   password: ${cluster_passwd}

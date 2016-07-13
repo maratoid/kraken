@@ -167,4 +167,8 @@ resource "execute_command" "command" {
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i '${path.module}/rendered/hosts' --connection=local ${path.module}/../../ansible/generate_local_ssh_config.yaml"
   }
+
+  provisioner "local-exec" {
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i '${path.module}/rendered/hosts' --connection=local ${path.module}/../../ansible/kraken_services.yaml"
+  }
 }

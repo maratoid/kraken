@@ -1,2 +1,11 @@
 ---
 ansible_connection: local
+kraken_services: <%= kraken_services %>
+kraken_services_repos: <%= kraken_services_repos %>
+thirdparty_scheduler: <%= thirdparty_scheduler %>
+service_tokens:
+  dns_domain: <%= dns_domain %>
+  command_passwd: <%= command_passwd %>
+  dockercfg_base64: <%= dockercfg_base64 %>
+  master_private_ip: <%= master_ip %>
+  etcd_private_ip: <%= etcd_ip %>

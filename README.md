@@ -20,8 +20,7 @@ The contents of the file consists of variable-value pairs. For example:
 
     variable_name = "variable_value"
 
-As described [here](https://www.terraform.io/intro/getting-started/variables.ht
-ml). For a local cluster you __must__ provide:
+As described [here](https://www.terraform.io/intro/getting-started/variables.html). For a local cluster you __must__ provide:
 
     cluster_name=<name of your cluster>
 
@@ -30,8 +29,7 @@ For an AWS cluster you __must__ provide:
     cluster_name = "<name of your cluster>"
     aws_user_prefix = "<prefix to use for named resources>"
 
-For an AWS cluster you __must__ configure an AWS credentials file as documented [here](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started
-.html#cli-config-files)
+For an AWS cluster you __must__ configure an AWS credentials file as documented [here](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-config-files)
 
 If the profile in your credential file is not named "default", you can specify
  different profile name as follows:
@@ -102,7 +100,7 @@ Running kraken-up with '--clustertype/-clustertype aws' should leave you with a 
 ## Connecting to your cluster with various tools
 On a system with a Bash shell:
 
-    $ ./kraken-connect.sh --dmname DOCKER_MACHINE_NAME --clustername KUBERNETES_CLUSTER_NAME
+    $ ./kraken-connect.sh --dmname DOCKER_MACHINE_NAME --clustername KUBERNETES_CLUSTER_NAME --clustertype CLUSTER_TYPE
     Machine DOCKER_MACHINE_NAME exists.
         To control your cluster use:
         kubectl --kubeconfig=clusters/ec2/kube_config --cluster=<cluster name> <kubectl commands>
@@ -113,8 +111,8 @@ Follow the instructions in script output.
 ## Destroy Cluster
 On a system with a Bash shell:
 
-    $ ./kraken-down.sh --dmname DOCKER_MACHINE_NAME --clustername KUBERNETES_CLUSTER_NAME
-
+    $ ./kraken-down.sh --dmname DOCKER_MACHINE_NAME --clustername KUBERNETES_CLUSTER_NAME --clustertype CLUSTER_TYPE
+    
 ## Using LogEntries.com
 1. First, create an account on logentries.com.
 2. Create a new log in your Logentries account by clicking + Add New Log.
@@ -130,8 +128,8 @@ On a system with a Bash shell:
 Limitations: Currently only works with sysdigcloud, not on premises.  Only works with a single apiserver running, not multiple.
 
 ### Helpful Links
-* kubectl user documentation can be found [here](https://github.com/GoogleCloudPlatform/kubernetes/blob/master/docs/kubectl.md)
-* kubectl [FAQ](https://github.com/GoogleCloudPlatform/kubernetes/wiki/User-FAQ)
+* kubectl user documentation can be found [here](https://github.com/kubernetes/kubernetes/blob/master/docs/user-guide/kubectl-overview.md)
+* Kubernetes [FAQ](https://github.com/GoogleCloudPlatform/kubernetes/wiki/User-FAQ)
 * Kubernetes conformance test logs run after a PR is merged to this repo located at http://e2e.kubeme.io
 
 ### Setting up without docker machine / setting up local cluster

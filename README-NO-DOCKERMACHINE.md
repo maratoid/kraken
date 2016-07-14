@@ -112,8 +112,8 @@ During the install of virtualbox you may have some new kernel modules avaliable.
 	sudo shutdown -r now
 
 ## Install [Terraform ](https://www.terraform.io/downloads.html)
-    wget  https://releases.hashicorp.com/terraform/0.6.13/terraform_0.6.13_linux_amd64.zip
-    unzip terraform_0.6.13_linux_amd64.zip
+    wget  https://releases.hashicorp.com/terraform/0.6.13/terraform_0.6.16_linux_amd64.zip
+    unzip terraform_0.6.16_linux_amd64.zip
     sudo mv terraform-pro* /usr/local/bin/
     sudo mv terraform /usr/local/bin/
 

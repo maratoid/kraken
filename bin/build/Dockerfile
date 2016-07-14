@@ -1,12 +1,12 @@
 FROM buildpack-deps:jessie-scm
 MAINTAINER Marat Garafutdinov <marat.g@samsung.com>
 
-ENV TERRAFORM_VERSION=0.6.14 \
+ENV TERRAFORM_VERSION=0.6.16 \
     TERRAFORM_EXECUTE_VERSION=v0.0.2 \
     TERRAFORM_COREOSBOX_VERSION=v0.0.1 \
     KUBERNETES_VERSION=v1.2.4
 
-# system dependencie
+# system dependencies
 RUN apt-get update \
     && apt-get install -y --force-yes \
       build-essential \
@@ -20,8 +20,23 @@ RUN apt-get update \
       libssl-dev \
       unzip \
       vim \
+      apt-transport-https \
+      ca-certificates
+
+# docker repo keys
+RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 \
+      --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+
+# Add docker repo
+RUN echo "deb https://apt.dockerproject.org/repo debian-jessie main" > /etc/apt/sources.list.d/docker.list
+
+# Install docker
+RUN apt-get update \
+    && apt-get install -y --force-yes \
+    docker-engine \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 
 # python dependencies
 COPY bin/build/requirements.txt /tmp/requirements.txt

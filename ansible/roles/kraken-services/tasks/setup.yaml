@@ -6,7 +6,7 @@
 - name: Clean up tiller rc if present
   become: yes
   shell: >
-    /opt/bin/kubectl --kubeconfig={{ kubeconfig | expanduser }} delete rc {{ tiller_rc }}
+    /usr/bin/kubectl --kubeconfig={{ kubeconfig | expanduser }} delete rc {{ tiller_rc }}
   ignore_errors: yes
 
 - name: Create Helm home
@@ -18,12 +18,12 @@
 - name: Init helm
   become: yes
   shell: >
-    docker run --rm -v {{ helm_home }}:/helm-home -v {{ kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} init --tiller-image {{ tiller_image }}
+    /usr/bin/docker run --rm -v {{ helm_home }}:/helm-home --volumes-from kraken_data -e KUBECONFIG={{ kubeconfig }} {{ helm_image }} init --tiller-image {{ tiller_image }}
 
 - name: Add helm repositories
   become: yes
   shell: >
-    docker run --rm -v {{ helm_home }}:/helm-home -v {{ kubeconfig | expanduser }}:/root/.kube/config {{ helm_image }} repo add {{ item.split('|')[0] }} {{ item.split('|')[1] }}
+    /usr/bin/docker run --rm -v {{ helm_home }}:/helm-home --volumes-from kraken_data -e KUBECONFIG={{ kubeconfig }} {{ helm_image }} repo add {{ item.split('|')[0] }} {{ item.split('|')[1] }}
   with_items: "{{ kraken_services_repos.split(' ') }}"
 
 - name: Get all user provided service configs

@@ -29,6 +29,7 @@ fi
 run_command "docker run -d --name ${KRAKEN_CONTAINER_NAME} \
         -v "${KRAKEN_AWS_CREDENTIAL_DIRECTORY}":/root/.aws/ \
         -v /var/run:/ansible \
+        -v /var/run/docker.sock:/var/run/docker.sock \
         --volumes-from kraken_data ${KRAKEN_CONTAINER_IMAGE_NAME} \
   bash -c \"/opt/kraken/terraform-down.sh \
         --clustertype ${KRAKEN_CLUSTER_TYPE} \

@@ -23,7 +23,7 @@
 - name: Remove helm repositories
   become: yes
   shell: >
-    /usr/bin/docker run --rm -v {{ helm_home }}:/helm-home --volumes-from kraken_data -e KUBECONFIG={{ kubeconfig }} {{ helm_image }} repo remove {{ item.split('|')[0] }} {{ item.split('|')[1] }}
+    /usr/bin/docker run --rm -v {{ helm_home }}:/helm-home --volumes-from kraken_data -e KUBECONFIG={{ kubeconfig }} {{ helm_image }} repo remove {{ item.split('|')[0] }}
   with_items: "{{ kraken_services_repos.split(' ') }}"
   ignore_errors: yes
 

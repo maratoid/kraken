@@ -28,7 +28,7 @@
 
 - name: Get all user provided service configs
   stat: path={{item}}
-  with_fileglob: {{ service_configs }}
+  with_fileglob: "{{ service_configs }}"
   register: user_configs
 
 - name: Fetch all the values files

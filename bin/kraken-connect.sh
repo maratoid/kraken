@@ -26,6 +26,7 @@ containerfiles=(
 container_var_files=(
   kraken_data:${src_cluster_dir}/group_vars/cluster
   kraken_data:${src_cluster_dir}/group_vars/all
+  kraken_data:${src_cluster_dir}/group_vars/local
 )
 
 is_running=$(docker inspect -f '{{ .State.Running }}' ${KRAKEN_CONTAINER_NAME})
@@ -45,6 +46,7 @@ if [ ${is_running} == "true" ];  then
     container_var_files=(
       ${KRAKEN_CONTAINER_NAME}:/opt/kraken/terraform/${KRAKEN_CLUSTER_TYPE}/rendered/group_vars/cluster
       ${KRAKEN_CONTAINER_NAME}:/opt/kraken/terraform/${KRAKEN_CLUSTER_TYPE}/rendered/group_vars/all
+      ${KRAKEN_CONTAINER_NAME}:/opt/kraken/terraform/${KRAKEN_CLUSTER_TYPE}/rendered/group_vars/local
     )
 fi
 

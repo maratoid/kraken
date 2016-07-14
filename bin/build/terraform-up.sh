@@ -43,4 +43,5 @@ done
 cp /opt/kraken/terraform/${KRAKEN_CLUSTER_TYPE}/rendered/hosts /kraken_data/${KRAKEN_CLUSTER_NAME}/hosts
 cp /opt/kraken/terraform/${KRAKEN_CLUSTER_TYPE}/rendered/group_vars/cluster /kraken_data/${KRAKEN_CLUSTER_NAME}/group_vars/cluster
 cp /opt/kraken/terraform/${KRAKEN_CLUSTER_TYPE}/rendered/group_vars/all /kraken_data/${KRAKEN_CLUSTER_NAME}/group_vars/all
+cp /opt/kraken/terraform/${KRAKEN_CLUSTER_TYPE}/rendered/group_vars/local /kraken_data/${KRAKEN_CLUSTER_NAME}/group_vars/local
 cp /root/.ssh/config_${KRAKEN_CLUSTER_NAME} /kraken_data/${KRAKEN_CLUSTER_NAME}/ssh_config

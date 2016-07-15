@@ -1,5 +1,10 @@
 ---
-- name: Create k8s-binary-scheduler
+- name: Create k8s-binary-kubelet path dropin
+  template: src=10-override-path.conf.jinja2
+            dest=/etc/systemd/system/k8s-binary-kubelet.service.d/10-override-path.conf
+  become: yes
+
+- name: Create k8s-binary-kubelet
   template: src=k8s-binary-kubelet.service.jinja2
             dest=/etc/systemd/system/k8s-binary-kubelet.service
   become: yes

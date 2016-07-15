@@ -3,12 +3,11 @@
   gather_facts: False
   roles:
     - { role: ansible-coreos-bootstrap, coreos_pypy_url: 'https://bitbucket.org/squeaky/portable-pypy/downloads' }
-    - { role: socat-coreos-bootstrap, socat_url: 'https://s3-us-west-2.amazonaws.com/sundry-automata/tools/CoreOS/socat/1.7.3.0/x86_64/socat' }
 
 - hosts: node
   gather_facts: False
   roles:
-    - { role: socat-coreos-bootstrap, socat_url: 'https://s3-us-west-2.amazonaws.com/sundry-automata/tools/CoreOS/socat/1.7.3.0/x86_64/socat' }
+    - { role: socat-coreos-bootstrap, socat_url: 'https://s3-us-west-2.amazonaws.com/sundry-automata/tools/CoreOS/socat/1.7.3.0/x86_64/socat', utils_path: /opt/bin }
 
 - hosts: etcd
   roles:
@@ -20,7 +19,7 @@
 
 - hosts: node
   roles:
-    - { role: kraken-node }
+    - { role: kraken-node, utils_path: /opt/bin }
 
 - hosts: apiserver
   roles:

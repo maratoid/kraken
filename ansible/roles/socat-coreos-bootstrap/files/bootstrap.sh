@@ -4,10 +4,10 @@ set -e
 
 cd
 
-if [[ -e /opt/bin/socat ]]; then
+if [[ -e $UTILS_PATH/socat ]]; then
   exit 0
 fi
 
 wget "$SOCAT_URL"
-mv ./socat /opt/bin/socat
-chmod 755 /opt/bin/socat
+mv ./socat $UTILS_PATH/socat
+chmod 755 $UTILS_PATH/socat

@@ -9,5 +9,5 @@ if [[ -e /usr/bin/socat ]]; then
 fi
 
 wget "$SOCAT_URL"
-mv ./socat /usr/bin/socat
-chmod +x /usr/bin/socat
+mv ./socat /opt/bin/socat
+chmod 755 /opt/bin/socat

@@ -4,7 +4,7 @@ set -e
 
 cd
 
-if [[ -e /usr/bin/socat ]]; then
+if [[ -e /opt/bin/socat ]]; then
   exit 0
 fi
 

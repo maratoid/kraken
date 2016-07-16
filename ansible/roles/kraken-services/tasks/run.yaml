@@ -7,7 +7,6 @@
   ignore_errors: yes
 
 - name: Stat all the custom user value files for services charts
-  become: yes
   stat: path={{ service_configs_dir }}/{{ item.split('|')[0] }}.{{ service_configs_ext }}.yaml
   with_items: "{{ kraken_services.split(' ') }}"
   register: defined_services_values
@@ -19,8 +18,7 @@
   with_together:
     - "{{ defined_services_values.results }}"
     - "{{ kraken_services.split(' ') }}"
-  when:
-    - item.0.exist == false
+  when: item.0.stat.exists == false
 
 - name: Install charts with user defined values
   become: yes
@@ -29,5 +27,4 @@
   with_together:
     - "{{ defined_services_values.results }}"
     - "{{ kraken_services.split(' ') }}"
-  when:
-    - item.0.exist == true
+  when: item.0.stat.exists == true

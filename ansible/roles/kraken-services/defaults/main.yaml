@@ -1,5 +1,5 @@
 ---
-base_config_dir: "/kraken_data/{{ cluster_name }}""
+base_config_dir: "/kraken_data/{{ cluster_name }}"
 kubeconfig: "{{ base_config_dir }}/kube_config"
 helm_home: "{{ base_config_dir }}/.helm"
 service_configs_dir: "/opt/kraken/terraform/{{ cluster_type }}/{{ cluster_name }}"

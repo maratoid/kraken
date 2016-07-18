@@ -58,11 +58,11 @@
     dest={{ services_local_path }}/ 
     flat=yes 
     fail_on_missing=yes
-  with_fileglob: "{{ service_configs }}"
+  with_fileglob: "{{ service_configs_src }}"
 
 - name: Render helm values files for all deployment names in kraken_services unless already present
-  template: src={{ item }} dest={{ service_configs_dir }}/{{ item | basename }}.yaml
+  template: src={{ item }} dest={{ service_configs_dst }}/{{ item | basename }}.yaml
   with_fileglob: "{{ services_local_path }}/*.{{ service_configs_ext }}"
 
 - name: Create default values file
-  template: src=helm-values.yaml.jinja2 dest={{ service_configs_dir }}/default-helm-values.yaml
+  template: src=helm-values.yaml.jinja2 dest={{ service_configs_dst }}/default-helm-values.yaml

@@ -2,7 +2,8 @@
 base_config_dir: "/kraken_data/{{ cluster_name }}"
 kubeconfig: "{{ base_config_dir }}/kube_config"
 helm_home: "{{ base_config_dir }}/.helm"
-service_configs_dir: "/opt/kraken/terraform/{{ cluster_type }}/{{ cluster_name }}"
+service_configs_src: "/opt/kraken/terraform/{{ cluster_type }}/{{ cluster_name }}"
+service_configs_dst: "{{ base_config_dir }}/services"
 service_configs_ext: helm
 service_configs: "{{ service_configs_dir }}/*.{{ service_configs_ext }}"
 kraken_services: "skydns|atlas/skydns-0.1.0 prometheus|atlas/prometheus-0.1.0 kubedash|atlas/kubedash-0.1.0 monitoring|atlas/cluster-monitoring-0.1.0"

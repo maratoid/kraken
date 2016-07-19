@@ -4,7 +4,6 @@
   register: services_local_path
 
 - name: Clean up tiller rc if present
-  become: yes
   shell: >
     /usr/bin/kubectl --kubeconfig={{ kubeconfig | expanduser }} delete rc {{ tiller_rc }}
   ignore_errors: yes
@@ -16,7 +15,6 @@
     state=directory
 
 - name: Init helm
-  become: yes
   shell: >
     /usr/bin/docker run --rm 
     -v {{ helm_home }}:/helm-home
@@ -25,7 +23,6 @@
     init --tiller-image {{ tiller_image }}
 
 - name: Remove helm repositories
-  become: yes
   shell: >
     /usr/bin/docker run --rm 
     -v {{ helm_home }}:/helm-home 
@@ -36,7 +33,6 @@
   ignore_errors: yes
 
 - name: Add helm repositories
-  become: yes
   shell: >
     /usr/bin/docker run --rm 
     -v {{ helm_home }}:/helm-home 

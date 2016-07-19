@@ -302,7 +302,7 @@ variable "kraken_services_repos" {
 }
 
 variable "kraken_services" {
-  default     = "skydns|atlas/skydns-0.1.0 prometheus|atlas/prometheus-0.1.0 kubedash|atlas/kubedash-0.1.0 monitoring|atlas/cluster-monitoring-0.1.0"
+  default     = "kubedns|atlas/kubedns-0.1.0 prometheus|atlas/prometheus-0.1.0 kubedash|atlas/kubedash-0.1.0 monitoring|atlas/cluster-monitoring-0.1.0"
   description = "Helm charts to deploy to cluster after it is done starting up."
 }
 

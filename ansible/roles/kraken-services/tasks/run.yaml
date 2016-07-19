@@ -1,6 +1,5 @@
 ---
 - name: Clean up releases
-  become: yes
   shell: >
     /usr/bin/docker run --rm 
     -v {{ helm_home }}:/helm-home 
@@ -16,7 +15,6 @@
   register: defined_services_values
 
 - name: Install charts without user defined values
-  become: yes
   shell: >
     /usr/bin/docker run --rm 
     -v {{ helm_home }}:/helm-home 
@@ -28,7 +26,6 @@
   when: item.0.stat.exists == false
 
 - name: Install charts with user defined values
-  become: yes
   shell: >
     /usr/bin/docker run --rm 
     -v {{ helm_home }}:/helm-home 

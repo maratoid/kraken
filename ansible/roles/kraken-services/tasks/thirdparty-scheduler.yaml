@@ -23,7 +23,7 @@
 
 - name: Stat the custom user value file for scheduler chart
   become: yes
-  stat: path={{ service_configs_dir }}/{{ thirdparty_scheduler.split('|')[0] }}.{{ service_configs_ext }}.yaml
+  stat: path={{ service_configs_dst }}/{{ thirdparty_scheduler.split('|')[0] }}.{{ service_configs_ext }}.yaml
   register: scheduler_user_values
 
 - name: Install third party scheduler chart without user defined values

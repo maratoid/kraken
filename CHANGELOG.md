@@ -51,7 +51,7 @@
 * Ability to assign CIDR network to AWS cluster
 * Ability to assign CIDR network to Virtual Box cluster
 * Using kubernetes release 0.15.0
-* SkyDNS with kube2skydns now on vagrant and AWS deploys
+* skydns with kube2skydns now on vagrant and AWS deploys
 * Building a kubernetes on AWS or Virtual Box VMS uses the same cloud-config files
 
 ###Bug fixes

@@ -5,15 +5,15 @@ helm_home: "{{ base_config_dir }}/.helm"
 service_configs_src: "/opt/kraken/terraform/{{ cluster_type }}/{{ cluster_name }}"
 service_configs_dst: "{{ base_config_dir }}/services"
 service_configs_ext: helm
-service_configs: "{{ service_configs_dir }}/*.{{ service_configs_ext }}"
-kraken_services: "skydns|atlas/skydns-0.1.0 prometheus|atlas/prometheus-0.1.0 kubedash|atlas/kubedash-0.1.0 monitoring|atlas/cluster-monitoring-0.1.0"
+service_configs: "{{ service_configs_src }}/*.{{ service_configs_ext }}"
+kraken_services: "kubedns|atlas/kubedns-0.1.0 prometheus|atlas/prometheus-0.1.0 kubedash|atlas/kubedash-0.1.0 monitoring|atlas/cluster-monitoring-0.1.0"
 kraken_services_repos: atlas|http://atlas.cnct.io
 tiller_rc: tiller-rc
 tiller_image: quay.io/samsung_cnct/tiller
 helm_image: quay.io/samsung_cnct/helm
 thirdparty_scheduler: #command-scheduler|atlas/command-0.1.0 
 services:
-  uge_password: "{{command_passwd}}"
+  scheduler_password: "{{command_passwd}}"
   dockercfg_base64: "{{dockercfg_base64}}"
   master_cadvisor: "{{master_private_ip}}:8094"
   etcd_cadvisor: "{{etcd_private_ip}}:8094"

@@ -164,7 +164,6 @@ Create the terraform variables file for the cluster. It will reside in ```terraf
     apiserver_count = "1"
     node_count = "3"
     cluster_name = "test-cluster"
-    apiserver_ip_address = "192.168.1.3"
     ip_base = "192.168.1"
 
 

@@ -1,8 +1,9 @@
 #!/bin/bash -
-#title           :kraken-down.sh
-#description     :use docker-machine to bring down a kraken cluster manager instance.
+#title           :kraken-ssh.sh
+#description     :ssh to a remotely managed cluster node
 #author          :Samsung SDSRA
 #==============================================================================
+
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -11,4 +12,5 @@ set -o pipefail
 my_dir=$(dirname "${BASH_SOURCE}")
 source "${my_dir}/utils.sh"
 
-${my_dir}/${KRAKEN_CLUSTER_TYPE}/kraken-down.sh ${ALL_OPTS}
+error "Not supported on local clusters"
+exit 1;

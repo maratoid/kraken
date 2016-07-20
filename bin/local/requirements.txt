@@ -1,0 +1,6 @@
+virtualbox
+terraform
+terraform-provider-execute
+terraform-provider-coreosbox
+kubectl
+vagrant

@@ -1,11 +1,16 @@
 ---
 - name: Clean up releases
   shell: >
-    /usr/bin/docker run --rm 
-    -v {{ helm_home }}:/helm-home 
-    --volumes-from kraken_data 
-    -e KUBECONFIG={{ kubeconfig }} {{ helm_image }} 
-    delete {{ item.split('|')[0] }}
+    /usr/bin/docker run --rm
+    -v {{ helm_home }}:/helm-home
+    --volumes-from kraken_data
+    -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
+    delete {{ item.split('|')[0] }}-{{ lookup('file', '/helm-home/' + item.split('|')[0])}}
+  with_items: "{{ kraken_services.split(' ') }}"
+  ignore_errors: yes
+
+- name: Clean up releases identifier names
+  file: path=/helm-home/item.split('|')[0] state=absent
   with_items: "{{ kraken_services.split(' ') }}"
   ignore_errors: yes
 
@@ -16,10 +21,12 @@
 
 - name: Install charts without user defined values
   shell: >
-    /usr/bin/docker run --rm 
-    -v {{ helm_home }}:/helm-home 
-    --volumes-from kraken_data -e KUBECONFIG={{ kubeconfig }} {{ helm_image }} 
-    install {{ item.1.split('|')[1] }} --name {{ item.1.split('|')[0] }} --values {{ service_configs_dst }}/default-helm-values.yaml
+    /usr/bin/docker run --rm
+    -v {{ helm_home }}:/helm-home
+    --volumes-from kraken_data -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
+    install {{ item.1.split('|')[1] }}
+    --name {{ item.1.split('|')[0] }}-{{ lookup('password', '/helm-home/' + item.1.split('|')[0] + ' chars=ascii_letters length=5') }}
+    --values {{ service_configs_dst }}/default-helm-values.yaml
   with_together:
     - "{{ defined_services_values.results }}"
     - "{{ kraken_services.split(' ') }}"
@@ -27,11 +34,13 @@
 
 - name: Install charts with user defined values
   shell: >
-    /usr/bin/docker run --rm 
-    -v {{ helm_home }}:/helm-home 
-    --volumes-from kraken_data 
-    -e KUBECONFIG={{ kubeconfig }} {{ helm_image }} 
-    install {{ item.1.split('|')[1] }} --name {{ item.1.split('|')[0] }} --values {{ service_configs_dst }}/{{ item.1.split('|')[0] }}.{{ service_configs_ext }}.yaml
+    /usr/bin/docker run --rm
+    -v {{ helm_home }}:/helm-home
+    --volumes-from kraken_data
+    -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
+    install {{ item.1.split('|')[1] }}
+    --name {{ item.1.split('|')[0] }}-{{ lookup('password', '/helm-home/' + item.1.split('|')[0] + ' chars=ascii_letters length=5') }}
+    --values {{ service_configs_dst }}/{{ item.1.split('|')[0] }}.{{ service_configs_ext }}.yaml
   with_together:
     - "{{ defined_services_values.results }}"
     - "{{ kraken_services.split(' ') }}"

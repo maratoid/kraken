@@ -10,7 +10,7 @@
   ignore_errors: yes
 
 - name: Clean up releases identifier names
-  file: path=/helm-home/item.split('|')[0] state=absent
+  file: path=/helm-home/{{item.split('|')[0]}} state=absent
   with_items: "{{ kraken_services.split(' ') }}"
   ignore_errors: yes
 

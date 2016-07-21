@@ -16,28 +16,28 @@
 
 - name: Init helm
   shell: >
-    /usr/bin/docker run --rm 
+    /usr/bin/docker run --rm
     -v {{ helm_home }}:/helm-home
-    --volumes-from kraken_data 
-    -e KUBECONFIG={{ kubeconfig }} {{ helm_image }} 
+    --volumes-from kraken_data
+    -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
     init --tiller-image {{ tiller_image }}
 
 - name: Remove helm repositories
   shell: >
-    /usr/bin/docker run --rm 
-    -v {{ helm_home }}:/helm-home 
-    --volumes-from kraken_data 
-    -e KUBECONFIG={{ kubeconfig }} {{ helm_image }} 
+    /usr/bin/docker run --rm
+    -v {{ helm_home }}:/helm-home
+    --volumes-from kraken_data
+    -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
     repo remove {{ item.split('|')[0] }}
   with_items: "{{ kraken_services_repos.split(' ') }}"
   ignore_errors: yes
 
 - name: Add helm repositories
   shell: >
-    /usr/bin/docker run --rm 
-    -v {{ helm_home }}:/helm-home 
-    --volumes-from kraken_data 
-    -e KUBECONFIG={{ kubeconfig }} {{ helm_image }} 
+    /usr/bin/docker run --rm
+    -v {{ helm_home }}:/helm-home
+    --volumes-from kraken_data
+    -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
     repo add {{ item.split('|')[0] }} {{ item.split('|')[1] }}
   with_items: "{{ kraken_services_repos.split(' ') }}"
 
@@ -50,11 +50,17 @@
   become: yes
   run_once: true
   fetch: >
-    src={{ item }} 
-    dest={{ services_local_path }}/ 
-    flat=yes 
+    src={{ item }}
+    dest={{ services_local_path }}/
+    flat=yes
     fail_on_missing=yes
   with_fileglob: "{{ service_configs_src }}"
+
+- name: Create configs destination
+  become: yes
+  file: >
+    path={{ service_configs_dst }}
+    state=directory
 
 - name: Render helm values files for all deployment names in kraken_services unless already present
   template: src={{ item }} dest={{ service_configs_dst }}/{{ item | basename }}.yaml

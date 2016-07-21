@@ -11,4 +11,4 @@ set -o pipefail
 my_dir=$(dirname "${BASH_SOURCE}")
 source "${my_dir}/utils.sh"
 
-${my_dir}/${KRAKEN_CLUSTER_TYPE}/kraken-connect.sh ${ALL_OPTS}
+${my_dir}/${KRAKEN_CLUSTER_TYPE}/kraken-connect.sh ${ALL_OPTS[@]}

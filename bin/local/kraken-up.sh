@@ -11,5 +11,4 @@ set -o pipefail
 my_dir=$(dirname "${BASH_SOURCE}")
 source "${my_dir}/utils.sh"
 
-
 warn "To be implemented"

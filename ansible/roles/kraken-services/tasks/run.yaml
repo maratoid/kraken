@@ -5,7 +5,7 @@
     -v {{ helm_home }}:/helm-home
     --volumes-from kraken_data
     -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
-    delete {{ item.split('|')[0] }}-{{ lookup('file', '/helm-home/' + item.split('|')[0])}}
+    delete {{ item.split('|')[0] }}-{{ lookup('file', helm_home + '/' + item.split('|')[0])}}
   with_items: "{{ kraken_services.split(' ') }}"
   ignore_errors: yes
 
@@ -25,7 +25,7 @@
     -v {{ helm_home }}:/helm-home
     --volumes-from kraken_data -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
     install {{ item.1.split('|')[1] }}
-    --name {{ item.1.split('|')[0] }}-{{ lookup('password', '/helm-home/' + item.1.split('|')[0] + ' chars=ascii_letters length=5') }}
+    --name {{ item.1.split('|')[0] }}-{{ lookup('password', helm_home + '/' + item.1.split('|')[0] + ' chars=ascii_letters length=5') }}
     --values {{ service_configs_dst }}/default-helm-values.yaml
   with_together:
     - "{{ defined_services_values.results }}"
@@ -39,7 +39,7 @@
     --volumes-from kraken_data
     -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
     install {{ item.1.split('|')[1] }}
-    --name {{ item.1.split('|')[0] }}-{{ lookup('password', '/helm-home/' + item.1.split('|')[0] + ' chars=ascii_letters length=5') }}
+    --name {{ item.1.split('|')[0] }}-{{ lookup('password', helm_home + '/' + item.1.split('|')[0] + ' chars=ascii_letters length=5') }}
     --values {{ service_configs_dst }}/{{ item.1.split('|')[0] }}.{{ service_configs_ext }}.yaml
   with_together:
     - "{{ defined_services_values.results }}"

@@ -294,6 +294,11 @@ variable "kraken_repo" {
   }
 
   description = "Kraken git repo"
+} 
+
+variable "kraken_services_namespaces" {
+  default     = "kube-system"
+  description = "Namespaces to pre-create prior to installing helm charts."
 }
 
 variable "kraken_services_repos" {

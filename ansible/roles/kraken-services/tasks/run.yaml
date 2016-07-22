@@ -15,19 +15,7 @@
   with_together:
     - "{{ defined_services_values.results }}"
     - "{{ kraken_services.split(' ') }}"
-  async: 7200
-  poll: 0
-  register: generic_results
   when: item.0.stat.exists == false
-
-- name: Wait for install without user defined values to complete
-  async_status: jid={{ item.ansible_job_id }}
-  register: generic_result
-  until: generic_result|success
-  retries: 5
-  delay: 5
-  with_items: generic_results.results
-  when: item.ansible_job_id is defined
 
 - name: Install charts with user defined values
   shell: >
@@ -41,16 +29,4 @@
   with_together:
     - "{{ defined_services_values.results }}"
     - "{{ kraken_services.split(' ') }}"
-  async: 7200
-  poll: 0
-  register: userdata_results
   when: item.0.stat.exists == true
-
-- name: Wait for install with user defined values to complete
-  async_status: jid={{ item.ansible_job_id }}
-  register: userdata_result
-  until: userdata_result|success
-  retries: 5
-  delay: 5
-  with_items: userdata_results.results
-  when: item.ansible_job_id is defined

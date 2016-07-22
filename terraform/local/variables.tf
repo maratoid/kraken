@@ -156,6 +156,11 @@ variable "kraken_services" {
   description = "Helm charts to deploy to cluster after it starts up."
 }
 
+variable "kraken_services_namespaces" {
+  default     = "kube-system"
+  description = "Namespaces to pre-create before service helm charts are installed."
+}
+
 variable "thirdparty_scheduler" {
   default     = ""
   description = "Kraken services folder that has a third party scheduler pod"

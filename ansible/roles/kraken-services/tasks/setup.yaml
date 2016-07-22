@@ -17,34 +17,26 @@
     -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
     delete {{ item.split('|')[0] }}
   with_items: "{{ kraken_services.split(' ') }}"
-  async: 7200
-  poll: 0
-  register: cleanup_results
   ignore_errors: yes
   when: tiller_present|success
-
-- name: Wait for cleanup to complete
-  async_status: jid={{ item.ansible_job_id }}
-  register: cleanup_result
-  until: cleanup_result|success
-  retries: 5
-  delay: 5
-  with_items: cleanup_results.results
-  when: (cleanup_results is defined) and (tiller_present|success)
-  ignore_errors: yes
-
-- name: Clean up releases identifier names
-  file: path={{ helm_home }}/{{item.split('|')[0]}} state=absent
-  with_items: "{{ kraken_services.split(' ') }}"
-  ignore_errors: yes
 
 - name: Clean up tiller rc if present
   shell: >
     /usr/bin/kubectl --kubeconfig={{ kubeconfig | expanduser }} delete rc {{ tiller_rc }}
   when: tiller_present|success
 
+- name: Delete all service namespaces
+  shell: >
+    /usr/bin/kubectl --kubeconfig={{ kubeconfig | expanduser }} delete namespace {{ item }}
+  with_items: "{{ kraken_services_namespaces.split(' ') }}"
+  ignore_errors: yes
+
+- name: Create all service namespaces
+  shell: >
+    /usr/bin/kubectl --kubeconfig={{ kubeconfig | expanduser }} create namespace {{ item }}
+  with_items: "{{ kraken_services_namespaces.split(' ') }}"
+
 - name: Create Helm home
-  become: yes
   file: >
     path={{ helm_home }}
     state=directory
@@ -82,7 +74,6 @@
   register: user_configs
 
 - name: Fetch all the values files
-  become: yes
   run_once: true
   fetch: >
     src={{ item }}
@@ -92,7 +83,6 @@
   with_fileglob: "{{ service_configs_src }}"
 
 - name: Create configs destination
-  become: yes
   file: >
     path={{ service_configs_dst }}
     state=directory

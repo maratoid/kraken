@@ -1,5 +1,6 @@
 ---
 ansible_connection: local
+kraken_services_namespaces: "${kraken_services_namespaces}"
 kraken_services: ${kraken_services}
 kraken_services_repos: ${kraken_services_repos}
 thirdparty_scheduler: ${thirdparty_scheduler}

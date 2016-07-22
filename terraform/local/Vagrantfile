@@ -136,6 +136,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           deployment_mode
           interface_name
           kraken_local_dir
+          kraken_services_namespaces
           kraken_services
           kraken_services_repos
           thirdparty_scheduler

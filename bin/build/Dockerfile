@@ -21,7 +21,8 @@ RUN apt-get update \
       unzip \
       vim \
       apt-transport-https \
-      ca-certificates
+      ca-certificates \
+      socat
 
 # docker repo keys
 RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 \

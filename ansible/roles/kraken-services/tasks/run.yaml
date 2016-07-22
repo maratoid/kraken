@@ -1,19 +1,4 @@
 ---
-- name: Clean up releases
-  shell: >
-    /usr/bin/docker run --rm
-    -v {{ helm_home }}:/helm-home
-    --volumes-from kraken_data
-    -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
-    delete {{ item.split('|')[0] }}-{{ lookup('file', helm_home + '/' + item.split('|')[0])}}
-  with_items: "{{ kraken_services.split(' ') }}"
-  ignore_errors: yes
-
-- name: Clean up releases identifier names
-  file: path=/helm-home/{{item.split('|')[0]}} state=absent
-  with_items: "{{ kraken_services.split(' ') }}"
-  ignore_errors: yes
-
 - name: Stat all the custom user value files for services charts
   stat: path={{ service_configs_dst }}/{{ item.split('|')[0] }}.{{ service_configs_ext }}.yaml
   with_items: "{{ kraken_services.split(' ') }}"
@@ -30,7 +15,19 @@
   with_together:
     - "{{ defined_services_values.results }}"
     - "{{ kraken_services.split(' ') }}"
+  async: 7200
+  poll: 0
+  register: generic_results
   when: item.0.stat.exists == false
+
+- name: Wait for install without user defined values to complete
+  async_status: jid={{ item.ansible_job_id }}
+  register: generic_result
+  until: generic_result|success
+  retries: 5
+  delay: 5
+  with_items: generic_results.results
+  when: item.ansible_job_id is defined
 
 - name: Install charts with user defined values
   shell: >
@@ -44,4 +41,16 @@
   with_together:
     - "{{ defined_services_values.results }}"
     - "{{ kraken_services.split(' ') }}"
+  async: 7200
+  poll: 0
+  register: userdata_results
   when: item.0.stat.exists == true
+
+- name: Wait for install with user defined values to complete
+  async_status: jid={{ item.ansible_job_id }}
+  register: userdata_result
+  until: userdata_result|success
+  retries: 5
+  delay: 5
+  with_items: userdata_results.results
+  when: item.ansible_job_id is defined

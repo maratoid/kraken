@@ -3,10 +3,45 @@
   local_action: shell mktemp -d -t services.{{ inventory_hostname }}.XXXXXXXXXX
   register: services_local_path
 
+- name: See if tiller rc if present
+  shell: >
+    /usr/bin/kubectl --kubeconfig={{ kubeconfig | expanduser }} get rc {{ tiller_rc }}
+  register: tiller_present
+  ignore_errors: yes
+
+- name: Clean up releases
+  shell: >
+    /usr/bin/docker run --rm
+    -v {{ helm_home }}:/helm-home
+    --volumes-from kraken_data
+    -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
+    delete {{ item.split('|')[0] }}-{{ lookup('file', helm_home + '/' + item.split('|')[0])}}
+  with_items: "{{ kraken_services.split(' ') }}"
+  async: 7200
+  poll: 0
+  register: cleanup_results
+  ignore_errors: yes
+  when: tiller_present|success
+
+- name: Wait for cleanup to complete
+  async_status: jid={{ item.ansible_job_id }}
+  register: cleanup_result
+  until: cleanup_result|success
+  retries: 5
+  delay: 5
+  with_items: cleanup_results.results
+  when: (cleanup_results is defined) and (tiller_present|success)
+  ignore_errors: yes
+
+- name: Clean up releases identifier names
+  file: path={{ helm_home }}/{{item.split('|')[0]}} state=absent
+  with_items: "{{ kraken_services.split(' ') }}"
+  ignore_errors: yes
+
 - name: Clean up tiller rc if present
   shell: >
     /usr/bin/kubectl --kubeconfig={{ kubeconfig | expanduser }} delete rc {{ tiller_rc }}
-  ignore_errors: yes
+  when: tiller_present|success
 
 - name: Create Helm home
   become: yes

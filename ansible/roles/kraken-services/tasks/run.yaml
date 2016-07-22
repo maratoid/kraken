@@ -10,7 +10,7 @@
     -v {{ helm_home }}:/helm-home
     --volumes-from kraken_data -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
     install {{ item.1.split('|')[1] }}
-    --name {{ item.1.split('|')[0] }}-{{ lookup('password', helm_home + '/' + item.1.split('|')[0] + ' chars=ascii_letters length=5') }}
+    --name {{ item.1.split('|')[0] }}
     --values {{ service_configs_dst }}/default-helm-values.yaml
   with_together:
     - "{{ defined_services_values.results }}"
@@ -36,7 +36,7 @@
     --volumes-from kraken_data
     -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
     install {{ item.1.split('|')[1] }}
-    --name {{ item.1.split('|')[0] }}-{{ lookup('password', helm_home + '/' + item.1.split('|')[0] + ' chars=ascii_letters length=5') }}
+    --name {{ item.1.split('|')[0] }}
     --values {{ service_configs_dst }}/{{ item.1.split('|')[0] }}.{{ service_configs_ext }}.yaml
   with_together:
     - "{{ defined_services_values.results }}"

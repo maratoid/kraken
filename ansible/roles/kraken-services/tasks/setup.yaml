@@ -15,7 +15,7 @@
     -v {{ helm_home }}:/helm-home
     --volumes-from kraken_data
     -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
-    delete {{ item.split('|')[0] }}-{{ lookup('file', helm_home + '/' + item.split('|')[0])}}
+    delete {{ item.split('|')[0] }}
   with_items: "{{ kraken_services.split(' ') }}"
   async: 7200
   poll: 0

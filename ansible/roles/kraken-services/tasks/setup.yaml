@@ -49,6 +49,9 @@
     -e KUBECONFIG={{ kubeconfig }} {{ helm_image }}
     init --tiller-image {{ tiller_image }}
 
+- name: Give tiller rc a chance to fully init
+  pause: seconds=5
+
 - name: Remove helm repositories
   shell: >
     /usr/bin/docker run --rm

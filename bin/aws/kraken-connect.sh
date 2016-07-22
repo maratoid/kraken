@@ -101,3 +101,6 @@ inf "\n\nParameters for terraform:\n   \
 
 inf "\n\nTo control your cluster use:\n  \
   kubectl --kubeconfig=${target_cluster_dir}/kube_config --cluster=${KRAKEN_CLUSTER_NAME} <kubectl commands>"
+
+inf "\n\nTo run helm use:\n  \
+  KUBECONFIG=${target_cluster_dir}/kube_config helm <helm commands>"

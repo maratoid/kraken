@@ -11,5 +11,8 @@ set -o pipefail
 my_dir=$(dirname "${BASH_SOURCE}")
 source "${my_dir}/utils.sh"
 
-warn "To be implemented"
+run_command "terraform destroy \
+              -input=false \
+              -state=${KRAKEN_ROOT}/terraform/${KRAKEN_CLUSTER_TYPE}/${KRAKEN_CLUSTER_NAME}/terraform.tfstate \
+              ${KRAKEN_ROOT}/terraform/${KRAKEN_CLUSTER_TYPE}"
 

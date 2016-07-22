@@ -6,7 +6,6 @@
 # set KRAKEN_ROOT to absolute path for use in other scripts
 readonly KRAKEN_ROOT=$(cd "$(dirname "${BASH_SOURCE}")/.."; pwd)
 KRAKEN_VERBOSE=${KRAKEN_VERBOSE:-false}
-KRAKEN_CLUSTER_TYPE="local"
 
 function warn {
   echo -e "\033[1;33mWARNING: $1\033[0m"
@@ -25,6 +24,6 @@ function run_command {
   if ${KRAKEN_VERBOSE}; then
     eval $1
   else
-    eval $1 &> /dev/null
+    eval $1 1> /dev/null
   fi
 }

@@ -11,4 +11,8 @@ set -o pipefail
 my_dir=$(dirname "${BASH_SOURCE}")
 source "${my_dir}/utils.sh"
 
-warn "To be implemented"
+run_command "terraform apply \
+-input=false \
+-state=${KRAKEN_ROOT}/terraform/${KRAKEN_CLUSTER_TYPE}/${KRAKEN_CLUSTER_NAME}/terraform.tfstate \
+-var-file=${KRAKEN_ROOT}/terraform/${KRAKEN_CLUSTER_TYPE}/${KRAKEN_CLUSTER_NAME}/terraform.tfvars \
+${KRAKEN_ROOT}/terraform/${KRAKEN_CLUSTER_TYPE}"
